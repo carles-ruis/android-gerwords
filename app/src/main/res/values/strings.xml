@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GerWords</string>
+    <string name="main_solution">Solution</string>
+    <string name="main_next">Next</string>
+    <string name="main_menu_english">English</string>
+    <string name="main_menu_german">German</string>
+
+    <string name="add_dialog_title">Add Word</string>
+    <string name="add_dialog_ok">Save</string>
+    <string name="add_dialog_cancel">Cancel</string>
+    <string name="add_dialog_next">Save &amp; Next</string>
+    <string name="add_dialog_question_hint">%s word</string>
+    <string name="add_dialog_solution_hint">%s translation</string>
+    <string name="add_dialog_german">German</string>
+    <string name="add_dialog_english">English</string>
+    <string name="add_dialog_catalan">Catalan</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_main_english"
+        android:icon="@drawable/ic_menu_catalan_to_english"
+        android:orderInCategory="2"
+        android:title="@string/main_menu_english"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_main_german"
+        android:icon="@drawable/ic_menu_german_to_english"
+        android:orderInCategory="1"
+        android:title="@string/main_menu_german"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="8dp"
+        android:drawable="@drawable/ic_germany"
+        android:right="8dp" />
+    <item
+        android:drawable="@drawable/ic_england"
+        android:left="8dp"
+        android:top="8dp" />
+
+</layer-list>
