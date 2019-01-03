@@ -323,6 +323,7 @@ receptar to.prescribe
 horari(botiga) opening.hours
 quedar to.remain,to.be.left
 quedar.be to.suit
+quedar-se to.stay,to.stick.around
 per.sort by.chance
 per.rematar.ho on.top.of.that
 pensar.en.fer to.intend
@@ -448,4 +449,5 @@ desgraciat unfortunate,miserable
 regadora watering.can
 abrigar-se to.cover.up
 abrigar to.shelter
-
+ajuntar to.put.together
+subsidi.d'atur unemployment.benefits
