@@ -109,7 +109,7 @@ pesat nuisance,pain.in.the.neck
 renunciar resign
 retolador sketch.pen,highlight.pen(flurescent),marker(pissarra)
 esquivar to.dodge
-punxar to.pierce
+punxar to.prick(agulla),to.pierce(bala)
 actualment currently
 impecable flawless
 tranquilitzar.se to.calm.down,to.cool.down
@@ -255,7 +255,6 @@ crep,tortita pancake
 blat,blat.de.moro corn
 agafar.afecte to.become.attached
 abrigar-se to.cover.up
-abocar-se to.lean.out
 vaga strike
 pinyons pineseeds
 picar(trapella) rascal(nen),rogue(malintencionat)
@@ -452,3 +451,24 @@ abrigar to.shelter
 ajuntar to.put.together
 subsidi.d'atur unemployment.benefits
 renyar to.tell.off,to.reprove
+abocar(de.costat) to.tilt
+inclinar to.tilt
+aprofitar to.take.advantage,to.leverage
+prevenir to.prevent
+intrèpid bold
+descarat cheeky
+dissimular to.conceal
+local(lloc) venue
+sacsejar to.shake
+sobtat sudden
+afinar(instrument) to.tune
+ajupir-se to.crouch
+arrupir-se to.curl.up
+tergiversar to.distort
+cargolar to.screw
+retorçar to.twist
+doblegar to.bend
+capgirar to.turn.over,to.turn.around,to.capsize
+caure to.fall,to.tumble(del.tot)
+demolir to.demolish
+
