@@ -471,4 +471,16 @@ doblegar to.bend
 capgirar to.turn.over,to.turn.around,to.capsize
 caure to.fall,to.tumble(del.tot)
 demolir to.demolish
-
+bolcar dump
+accelerador throttle
+habitar to.dwell
+continu seamless
+implícit implicit,underlying
+inquilí tenant
+categòric opinionated
+trobar.una.solució to.come.up
+determinar to.decide,to.establish
+esforçar-se to.strive,to.struggle
+retreure to.reproach
+per.què? what.for?,how.come?
+desgastar to.wear.away

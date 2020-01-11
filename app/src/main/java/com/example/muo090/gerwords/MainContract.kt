@@ -1,8 +1,8 @@
 package com.example.muo090.gerwords
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.IdRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 
 interface MainContractPresenter {
 
