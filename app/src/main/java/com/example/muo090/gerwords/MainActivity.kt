@@ -1,24 +1,18 @@
 package com.example.muo090.gerwords
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), MainView, AddWordDialogFragment.AddWordDialogListener {
 
-    private val presenter: MainContractPresenter
+    private lateinit var presenter: MainContractPresenter
     private lateinit var toolbar: Toolbar
     private lateinit var translateFromImage: ImageView
     private lateinit var translateToImage: ImageView
@@ -28,23 +22,12 @@ class MainActivity : AppCompatActivity(), MainView {
     private lateinit var actionButton: Button
     private lateinit var menu: Menu
 
-    private var addWordDialog : AddWordDialog? = null
-    private lateinit var addQuestionInputLayout: TextInputLayout
-    private lateinit var addQuestionEditText: EditText
-    private lateinit var addSolutionInputLayout: TextInputLayout
-    private lateinit var addSolutionEditText: EditText
-    private lateinit var saveButton: Button
-    private lateinit var saveAndNextButton: Button
-
-    init {
-        presenter = MainPresenter(FileUtils(this))
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViews()
-        presenter.onCreateView(this)
+        presenter = MainPresenter(this)
+        presenter.onCreateView()
     }
 
     private fun findViews() {
@@ -58,15 +41,9 @@ class MainActivity : AppCompatActivity(), MainView {
         questionTextView = findViewById(R.id.main_question_textview)
         solutionTextView = findViewById(R.id.main_solution_textview)
         addButton = findViewById(R.id.main_add_button)
-        addButton.setOnClickListener { showAddWordDialog() }
+        addButton.setOnClickListener { presenter.onAddButtonClicked() }
         actionButton = findViewById(R.id.main_action_button)
         actionButton.setOnClickListener { presenter.onActionButtonClicked(actionButton.getTag() as Int) }
-    }
-
-    private fun showAddWordDialog() {
-        addButton.setEnabled(false)
-        addWordDialog = AddWordDialog(this)
-        addWordDialog?.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,35 +79,17 @@ class MainActivity : AppCompatActivity(), MainView {
         translateToImage.setImageResource(toLanguageImage)
     }
 
-    override fun onDestroy() {
-        presenter.onDestroyView()
-        super.onDestroy()
+    override fun onSaveButtonClick(question: String, solution: String) {
+        presenter.onSaveButtonClicked(question, solution)
     }
 
-    override fun enableAddWordButtons(enabled: Boolean) {
-        saveButton.setEnabled(enabled)
-        saveAndNextButton.setEnabled(enabled)
+    override fun showDialog(fragment: AddWordDialogFragment) {
+        addButton.setEnabled(false)
+        fragment.show(supportFragmentManager, AddWordDialogFragment.TAG)
     }
+}
 
-    override fun setQuestionHint(hint: Int) {
-        addQuestionInputLayout.setHint(getString(R.string.add_dialog_question_hint, getString(hint)))
-    }
-
-    override fun setSolutionHint(hint: Int) {
-        addSolutionInputLayout.setHint(getString(R.string.add_dialog_question_hint, getString(hint)))
-    }
-
-    override fun dismissAddWordDialog() {
-        addWordDialog?.dismiss()
-    }
-
-    override fun cleanAddWordEditTexts() {
-        addQuestionEditText.setText("")
-        addSolutionEditText.setText("")
-        addQuestionEditText.requestFocus()
-    }
-
-    inner class AddWordDialog(context: Context) : AlertDialog(context) {
+/*    inner class AddWordDialog(context: Context) : AlertDialog(context) {
 
         override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -145,27 +104,26 @@ class MainActivity : AppCompatActivity(), MainView {
             addQuestionInputLayout = view.findViewById(R.id.addword_question_inputlayout)
             addQuestionInputLayout.setHint(getString(R.string.add_dialog_question_hint, getString(R.string.add_dialog_german)))
             addQuestionEditText = view.findViewById(R.id.addword_question_edittext)
-            addQuestionEditText.setAfterTextChangedListener { presenter.onAddWordTextChanged(addQuestionEditText.content(), addSolutionEditText.content()) }
+            addQuestionEditText.doAfterTextChanged { afterTextChanged }
+
             addSolutionInputLayout = view.findViewById(R.id.addword_solution_inputlayout)
             addSolutionInputLayout.setHint(getString(R.string.add_dialog_solution_hint, getString(R.string.add_dialog_english)))
             addSolutionEditText = view.findViewById(R.id.addword_solution_edittext)
-            addSolutionEditText.setAfterTextChangedListener { presenter.onAddWordTextChanged(addQuestionEditText.content(), addSolutionEditText.content()) }
+            addSolutionEditText.doAfterTextChanged { afterTextChanged }
 
             setOnDismissListener {
                 addButton.setEnabled(true)
                 addWordDialog = null
             }
             setOnShowListener {
-                saveButton = getButton(DialogInterface.BUTTON_POSITIVE)
-                saveButton.setOnClickListener { _ -> presenter.onSaveButtonClicked(addQuestionEditText.content(), addSolutionEditText.content(), BUTTON_POSITIVE) }
-                saveAndNextButton = getButton(DialogInterface.BUTTON_NEUTRAL)
-                saveAndNextButton.setOnClickListener { _ -> presenter.onSaveButtonClicked(addQuestionEditText.content(), addSolutionEditText.content(), DialogInterface.BUTTON_NEUTRAL) }
+                saveButton = getButton(BUTTON_POSITIVE)
+                saveButton.setOnClickListener { onSaveButtonClick(BUTTON_POSITIVE) }
+                saveAndNextButton = getButton(BUTTON_NEUTRAL)
+                saveAndNextButton.setOnClickListener { onSaveButtonClick(BUTTON_NEUTRAL) }
                 addQuestionEditText.requestFocus()
                 presenter.onAddWordDialogShown()
             }
 
             super.onCreate(savedInstanceState)
         }
-    }
-
-}
+    } */

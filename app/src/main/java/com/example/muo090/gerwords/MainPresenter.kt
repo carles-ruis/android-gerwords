@@ -1,34 +1,47 @@
 package com.example.muo090.gerwords
 
-import android.content.DialogInterface.BUTTON_POSITIVE
+import android.content.Context
 import android.util.Log
+import java.io.File
 import java.util.*
 
-class MainPresenter(val fileUtils: FileUtils) : BasePresenter(), MainContractPresenter {
+class MainPresenter(val view: MainView) : MainContractPresenter {
 
-    val TAG = this.javaClass.simpleName
-    var view: MainView? = null
-    var words = mutableListOf<Pair<String, String>>()
-    lateinit var currentWords: Pair<String, String>
-    lateinit var currentFilename: String
-
-    override fun onCreateView(view: MainView) {
-        this.view = view
-        loadData(GERMAN_DICTIONARY_FILENAME)
+    companion object {
+        private const val TAG = "MainPresenter"
+        private const val ENGLISH_DICTIONARY_ASSET = "assets/englishwords.txt"
+        private const val GERMAN_DICTIONARY_ASSET: String = "assets/germanwords.txt"
     }
 
-    override fun onDestroyView() {
-        view = null
+    private val INTERNAL_DIRECTORY : String
+    private val GERMAN_DICTIONARY_FILENAME : String
+    private val ENGLISH_DICTIONARY_FILENAME : String
+    init {
+        INTERNAL_DIRECTORY = (view as Context).filesDir.path + "/"
+        GERMAN_DICTIONARY_FILENAME = INTERNAL_DIRECTORY + "germanwords.txt"
+        ENGLISH_DICTIONARY_FILENAME = INTERNAL_DIRECTORY + "englishwords.txt"
+    }
+
+    var words = mutableListOf<Pair<String, String>>()
+    private var currentWords: Pair<String, String>? = null
+    private lateinit var currentFilename: String
+
+    override fun onCreateView() {
+        currentFilename = GERMAN_DICTIONARY_FILENAME
+        loadData(currentFilename)
     }
 
     private fun loadData(filename: String) {
         words.clear()
 
-        if (!fileUtils.exists(filename)) fileUtils.createFile(filename)
-        fileUtils.read(filename).forEach { addWords(it) }
+        if (!filename.existsFile()) {
+            val asset = if (GERMAN_DICTIONARY_FILENAME.equals(filename)) GERMAN_DICTIONARY_ASSET else ENGLISH_DICTIONARY_ASSET
+            filename.createFileFromAsset(view as Context, asset)
+        }
+        filename.readLines { line -> addWords(line) }
 
         this.currentFilename = filename
-        view?.updateLanguageIcons(
+        view.updateLanguageIcons(
                 if (GERMAN_DICTIONARY_FILENAME.equals(filename)) R.drawable.ic_germany else R.drawable.ic_catalonia,
                 R.drawable.ic_england
         )
@@ -37,7 +50,7 @@ class MainPresenter(val fileUtils: FileUtils) : BasePresenter(), MainContractPre
 
     private fun addWords(line: String) {
         val splited = line.split(" ")
-        if (splited.size != 2 || empty(splited[0]) || empty(splited[1])) {
+        if (splited.size != 2 || splited[0].isEmpty() || splited[1].isEmpty()) {
             Log.w(TAG, line + " doesn't have two tokens")
             return
         }
@@ -54,13 +67,12 @@ class MainPresenter(val fileUtils: FileUtils) : BasePresenter(), MainContractPre
     private fun getSolutionCount(solution: String) = solution.split(",").size
 
     private fun setNewWord() {
-        currentWords = words[Random().nextInt(words.size)]
-        view?.showQuestion(currentWords.first)
+        currentWords = words[Random().nextInt(words.size)].apply { view.showQuestion(first) }
     }
 
     override fun onActionButtonClicked(action: Int) {
         if (action == R.string.main_solution) {
-            view?.showSolution(currentWords.second)
+            currentWords?.apply { view.showSolution(second) }
         } else {
             setNewWord()
         }
@@ -74,23 +86,18 @@ class MainPresenter(val fileUtils: FileUtils) : BasePresenter(), MainContractPre
         loadData(ENGLISH_DICTIONARY_FILENAME)
     }
 
-    override fun onSaveButtonClicked(question: String, solution: String, which : Int) {
-        fileUtils.append(currentFilename, question, solution)
-        loadData(currentFilename)
-        if (which == BUTTON_POSITIVE) {
-            view?.dismissAddWordDialog()
-        } else {
-            view?.cleanAddWordEditTexts()
+    override fun onAddButtonClicked() {
+        val questionHintRes =
+                if (GERMAN_DICTIONARY_FILENAME.equals(currentFilename)) R.string.add_dialog_german else R.string.add_dialog_catalan
+
+        AddWordDialogFragment.newInstance(questionHintRes).apply {
+            isCancelable = false
+            this@MainPresenter.view.showDialog(this)
         }
     }
 
-    override fun onAddWordTextChanged(question: String, solution: String) {
-        view?.enableAddWordButtons(question.isNotEmpty() && solution.isNotEmpty())
-    }
-
-    override fun onAddWordDialogShown() {
-        view?.enableAddWordButtons(false)
-        view?.setQuestionHint(if (GERMAN_DICTIONARY_FILENAME.equals(currentFilename)) R.string.add_dialog_german else R.string.add_dialog_catalan)
-        view?.setSolutionHint(R.string.add_dialog_english)
+    override fun onSaveButtonClicked(question: String, solution: String) {
+        currentFilename.append(Pair(question, solution))
+        loadData(currentFilename)
     }
 }

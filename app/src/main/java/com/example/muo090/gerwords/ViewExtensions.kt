@@ -4,12 +4,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.widget.EditText
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.DialogFragment
 
-fun BasePresenter.empty(string: String?) = string?.isBlank() ?: true
-fun BasePresenter.notEmpty(string: String?) = !empty(string)
+fun DialogFragment.inflate(@LayoutRes layoutRes : Int) = LayoutInflater.from(this.context).inflate(layoutRes, null)
 
 fun EditText.empty() = text.toString().trim().isBlank()
-fun EditText.notEmpty() = !empty()
 fun EditText.content() = text.toString().trim()
 
 fun EditText.setAfterTextChangedListener(afterTextChanged: (String) -> Unit) {

@@ -10,8 +10,8 @@
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
+        android:background="?colorPrimary"
+        android:minHeight="?actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white" />
 
@@ -57,10 +57,9 @@
 
     <TextView
         android:id="@+id/main_question_textview"
-        style="@style/TextAppearance.AppCompat.Title"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/main_solution_textview"
@@ -71,10 +70,9 @@
 
     <TextView
         android:id="@+id/main_solution_textview"
-        style="@style/TextAppearance.AppCompat.Title"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/main_action_button"
@@ -85,7 +83,6 @@
 
     <Button
         android:id="@+id/main_action_button"
-        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_solution"
@@ -102,7 +99,6 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@android:color/white"
-        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

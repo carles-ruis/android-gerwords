@@ -6,9 +6,7 @@ import androidx.annotation.StringRes
 
 interface MainContractPresenter {
 
-    fun onCreateView(view: MainView)
-
-    fun onDestroyView()
+    fun onCreateView()
 
     fun onGermanButtonClicked()
 
@@ -16,11 +14,9 @@ interface MainContractPresenter {
 
     fun onActionButtonClicked(action: Int)
 
-    fun onSaveButtonClicked(question: String, solution: String, which : Int)
+    fun onAddButtonClicked()
 
-    fun onAddWordTextChanged(question: String, solution:String)
-
-    fun onAddWordDialogShown()
+    fun onSaveButtonClicked(question: String, solution: String)
 }
 
 interface MainView {
@@ -31,13 +27,6 @@ interface MainView {
 
     fun updateLanguageIcons(@DrawableRes fromLanguageImage: Int, @DrawableRes toLanguageImage: Int)
 
-    fun enableAddWordButtons(enabled : Boolean)
+    fun showDialog(fragment: AddWordDialogFragment)
 
-    fun setQuestionHint(@StringRes hint : Int)
-
-    fun setSolutionHint(@StringRes hint : Int)
-
-    fun dismissAddWordDialog()
-
-    fun cleanAddWordEditTexts()
 }
