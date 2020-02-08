@@ -89,11 +89,7 @@ class MainPresenter(val view: MainView) : MainContractPresenter {
     override fun onAddButtonClicked() {
         val questionHintRes =
                 if (GERMAN_DICTIONARY_FILENAME.equals(currentFilename)) R.string.add_dialog_german else R.string.add_dialog_catalan
-
-        AddWordDialogFragment.newInstance(questionHintRes).apply {
-            isCancelable = false
-            this@MainPresenter.view.showDialog(this)
-        }
+        view.showAddWordDialog(questionHintRes)
     }
 
     override fun onSaveButtonClicked(question: String, solution: String) {

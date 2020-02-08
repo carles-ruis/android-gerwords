@@ -2,6 +2,7 @@ package com.example.muo090.gerwords
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -44,12 +45,12 @@ class AddWordDialogFragment : DialogFragment() {
         customView = inflate(R.layout.dialog_add_word)
 
         val dialog = MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.add_dialog_title)
-                .setView(customView)
-                .setCancelable(false)
-                .setNegativeButton(R.string.add_dialog_cancel, null)
-                .setPositiveButton(R.string.add_dialog_ok, null)
-                .create()
+            .setTitle(R.string.add_dialog_title)
+            .setView(customView)
+            .setCancelable(false)
+            .setNegativeButton(R.string.add_dialog_cancel, null)
+            .setPositiveButton(R.string.add_dialog_ok, null)
+            .create()
         dialog.setOnShowListener { initViews() }
 
         return dialog
@@ -74,17 +75,22 @@ class AddWordDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        listener?.onDialogDismiss()
+        super.onDismiss(dialog)
+    }
+
     companion object {
         const val TAG = "AddWordDialogFragment"
         const val EXTRA_QUESTION_HINT = "extra_question_hint"
-        fun newInstance(@StringRes
-                        questionHint: Int) =
-                AddWordDialogFragment().apply {
-                    arguments = Bundle().apply { putInt(EXTRA_QUESTION_HINT, questionHint) }
-                }
+        fun newInstance(questionHint: Int) =
+            AddWordDialogFragment().apply {
+                arguments = Bundle().apply { putInt(EXTRA_QUESTION_HINT, questionHint) }
+            }
     }
 
     interface AddWordDialogListener {
         fun onSaveButtonClick(question: String, solution: String)
+        fun onDialogDismiss()
     }
 }

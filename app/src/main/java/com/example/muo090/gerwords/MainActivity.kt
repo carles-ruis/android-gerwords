@@ -6,14 +6,15 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), MainView, AddWordDialogFragment.AddWordDialogListener {
 
     private lateinit var presenter: MainContractPresenter
-    private lateinit var toolbar: Toolbar
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var translateFromImage: ImageView
     private lateinit var translateToImage: ImageView
     private lateinit var questionTextView: TextView
@@ -83,47 +84,12 @@ class MainActivity : AppCompatActivity(), MainView, AddWordDialogFragment.AddWor
         presenter.onSaveButtonClicked(question, solution)
     }
 
-    override fun showDialog(fragment: AddWordDialogFragment) {
+    override fun onDialogDismiss() {
+        addButton.isEnabled = true
+    }
+
+    override fun showAddWordDialog(@StringRes questionHintRes: Int) {
         addButton.setEnabled(false)
-        fragment.show(supportFragmentManager, AddWordDialogFragment.TAG)
+        AddWordDialogFragment.newInstance(questionHintRes).show(supportFragmentManager, AddWordDialogFragment.TAG)
     }
 }
-
-/*    inner class AddWordDialog(context: Context) : AlertDialog(context) {
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-
-            val view = LayoutInflater.from(context).inflate(R.layout.dialog_add_word, null)
-            setView(view)
-            setTitle(R.string.add_dialog_title)
-            setCancelable(false)
-            setButton(BUTTON_POSITIVE, getString(R.string.add_dialog_ok)) { _, _ -> }
-            setButton(BUTTON_NEGATIVE, getString(R.string.add_dialog_cancel)) { _, _ -> }
-            setButton(BUTTON_NEUTRAL, getString(R.string.add_dialog_next)) { _, _ -> }
-
-            addQuestionInputLayout = view.findViewById(R.id.addword_question_inputlayout)
-            addQuestionInputLayout.setHint(getString(R.string.add_dialog_question_hint, getString(R.string.add_dialog_german)))
-            addQuestionEditText = view.findViewById(R.id.addword_question_edittext)
-            addQuestionEditText.doAfterTextChanged { afterTextChanged }
-
-            addSolutionInputLayout = view.findViewById(R.id.addword_solution_inputlayout)
-            addSolutionInputLayout.setHint(getString(R.string.add_dialog_solution_hint, getString(R.string.add_dialog_english)))
-            addSolutionEditText = view.findViewById(R.id.addword_solution_edittext)
-            addSolutionEditText.doAfterTextChanged { afterTextChanged }
-
-            setOnDismissListener {
-                addButton.setEnabled(true)
-                addWordDialog = null
-            }
-            setOnShowListener {
-                saveButton = getButton(BUTTON_POSITIVE)
-                saveButton.setOnClickListener { onSaveButtonClick(BUTTON_POSITIVE) }
-                saveAndNextButton = getButton(BUTTON_NEUTRAL)
-                saveAndNextButton.setOnClickListener { onSaveButtonClick(BUTTON_NEUTRAL) }
-                addQuestionEditText.requestFocus()
-                presenter.onAddWordDialogShown()
-            }
-
-            super.onCreate(savedInstanceState)
-        }
-    } */

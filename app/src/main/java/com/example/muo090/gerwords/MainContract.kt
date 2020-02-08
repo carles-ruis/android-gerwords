@@ -27,6 +27,6 @@ interface MainView {
 
     fun updateLanguageIcons(@DrawableRes fromLanguageImage: Int, @DrawableRes toLanguageImage: Int)
 
-    fun showDialog(fragment: AddWordDialogFragment)
+    fun showAddWordDialog(@StringRes questionHintRes: Int)
 
 }
