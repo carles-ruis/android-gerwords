@@ -1,7 +1,6 @@
 package com.example.muo090.gerwords
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 
 interface MainContractPresenter {
@@ -12,11 +11,13 @@ interface MainContractPresenter {
 
     fun onEnglishButtonClicked()
 
-    fun onActionButtonClicked(action: Int)
+    fun onSolutionButtonClick()
+
+    fun onNextButtonClick()
 
     fun onAddButtonClicked()
 
-    fun onSaveButtonClicked(question: String, solution: String)
+    fun onSaveButtonClick(question: String, solution: String)
 }
 
 interface MainView {

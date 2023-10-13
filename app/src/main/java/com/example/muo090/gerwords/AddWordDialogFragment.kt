@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,12 +27,17 @@ class AddWordDialogFragment : DialogFragment() {
     private lateinit var addSolutionEditText: EditText
     private lateinit var positiveButton: Button
 
+    private val extraQuestionHint by lazy { requireArguments().getInt(EXTRA_QUESTION_HINT) }
+
     private val afterTextChanged: (Editable?) -> Unit = {
-        positiveButton.isEnabled = !addQuestionEditText.empty() && !addSolutionEditText.empty()
+        positiveButton.isEnabled = addQuestionEditText.text.isNotBlank() && addSolutionEditText.text.isNotBlank()
     }
 
     private val onSaveButtonClick: (View) -> Unit = {
-        listener?.onSaveButtonClick(addQuestionEditText.content(), addSolutionEditText.content())
+        listener?.onSaveButtonClick(
+            question = addQuestionEditText.text.toString().trim(),
+            solution = addSolutionEditText.text.toString().trim()
+        )
         dismiss()
     }
 
@@ -42,9 +47,9 @@ class AddWordDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        customView = inflate(R.layout.dialog_add_word)
+        customView = LayoutInflater.from(context).inflate(R.layout.dialog_add_word, null)
 
-        val dialog = MaterialAlertDialogBuilder(context)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.add_dialog_title)
             .setView(customView)
             .setCancelable(false)
@@ -60,7 +65,7 @@ class AddWordDialogFragment : DialogFragment() {
 
     private fun initViews() {
         addQuestionInputLayout = customView.findViewById(R.id.addword_question_inputlayout)
-        addQuestionInputLayout.setHint(getString(R.string.add_dialog_question_hint, getString(arguments!!.getInt(EXTRA_QUESTION_HINT))))
+        addQuestionInputLayout.hint = getString(R.string.add_dialog_question_hint, getString(extraQuestionHint))
         addQuestionEditText = customView.findViewById(R.id.addword_question_edittext)
         addQuestionEditText.doAfterTextChanged(afterTextChanged)
 
@@ -83,14 +88,15 @@ class AddWordDialogFragment : DialogFragment() {
     companion object {
         const val TAG = "AddWordDialogFragment"
         const val EXTRA_QUESTION_HINT = "extra_question_hint"
+
         fun newInstance(questionHint: Int) =
             AddWordDialogFragment().apply {
-                arguments = Bundle().apply { putInt(EXTRA_QUESTION_HINT, questionHint) }
+                arguments = bundleOf(EXTRA_QUESTION_HINT to questionHint)
             }
     }
+}
 
-    interface AddWordDialogListener {
-        fun onSaveButtonClick(question: String, solution: String)
-        fun onDialogDismiss()
-    }
+interface AddWordDialogListener {
+    fun onSaveButtonClick(question: String, solution: String)
+    fun onDialogDismiss()
 }
